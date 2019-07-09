@@ -1,0 +1,32 @@
+steps:
+  - name: 'gcr.io/cloud-builders/git'
+    args: ['clone', '--single-branch', '--branch', $BRANCH_NAME, '${_REPO_URL}', '.']
+    id: 'clone-branch'
+  - name: 'ubuntu'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        echo 'PROJECT_ID = "$PROJECT_ID"' > global_vars.bzl &&
+        echo 'GCS_BUCKET = "${_GCS_BUCKET}/${_BUILD_TAG}"' >> global_vars.bzl &&
+        echo 'REPO_NAME = "${_REPO_NAME}"' >> global_vars.bzl &&
+        echo 'KFP_HOST = "YOUR-KFP-HOST"' >> global_vars.bzl &&
+        echo 'KFP_CLIENT_ID = "YOUR-CLIENT-ID"' >> global_vars.bzl &&
+        cat global_vars.bzl
+    id: 'build-setup'
+  - name: 'gcr.io/$PROJECT_ID/boilerplate/build_scheduler:latest'
+    args: ['--output-folder', '${_BUILD_DATA_FOLDER}', '--num-steps', '1']
+    id: 'build-scheduler'
+  - name: 'gcr.io/$PROJECT_ID/boilerplate/docker_builder:latest'
+    args: ['--build-data-folder', '${_BUILD_DATA_FOLDER}', '--dry-run', 'False']
+    id: 'docker-build-all'
+  - name: 'gcr.io/$PROJECT_ID/boilerplate/bazel_builder:latest'
+    args: ['--build-data-folder', '${_BUILD_DATA_FOLDER}', '--dry-run', 'False']
+    id: 'bazel-build-all'
+timeout: '14400s'
+substitutions:
+  _GCS_BUCKET: gs://aihub-content-test
+  _BUILD_DATA_FOLDER: .build_data
+  _BUILD_TAG: $BUILD_ID
+  _REPO_NAME: $REPO_NAME
+  _REPO_URL: https://github.com/randxie/pipeline-build-example.git
