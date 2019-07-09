@@ -4,7 +4,8 @@ steps:
     args:
       - '-c'
       - |
-        git fetch origin $BRANCH_NAME --depth 2 &&
+        git init &&
+        git fetch ${_REPO_URL} $BRANCH_NAME --depth 2 &&
         git merge FETCH_HEAD &&
         git diff --name-only HEAD HEAD~1
     id: 'fetch-head'
@@ -38,3 +39,4 @@ substitutions:
   _BUILD_DATA_FOLDER: .build_data
   _BUILD_TAG: $BUILD_ID
   _REPO_NAME: $REPO_NAME
+  _REPO_URL: https://github.com/randxie/pipeline-build-example.git
