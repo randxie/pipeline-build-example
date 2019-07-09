@@ -1,7 +1,4 @@
 steps:
-  - name: 'gcr.io/cloud-builders/git'
-    args: ['clone', '--single-branch', '--branch', $BRANCH_NAME, '${_REPO_URL}', '.']
-    id: 'clone-branch'
   - name: 'ubuntu'
     entrypoint: 'bash'
     args:
