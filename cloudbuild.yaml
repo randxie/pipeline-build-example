@@ -4,9 +4,8 @@ steps:
     args:
       - '-c'
       - |
-        ls &&
-        ls /workspace &&
-        git clone ${_REPO_URL} /workspace --branch $BRANCH_NAME --depth 2 &&
+        git fetch origin $BRANCH_NAME --depth 2 &&
+        git reset --hard origin/$BRANCH_NAME &&
         git diff --name-only HEAD HEAD~1
     id: 'fetch-head'
   - name: 'gcr.io/$PROJECT_ID/boilerplate/ci_setup:latest'
@@ -16,7 +15,6 @@ steps:
     args:
       - '-c'
       - |
-        ls /workspace &&
         echo 'PROJECT_ID = "$PROJECT_ID"' > global_vars.bzl &&
         echo 'GCS_BUCKET = "${_GCS_BUCKET}/${_BUILD_TAG}"' >> global_vars.bzl &&
         echo 'REPO_NAME = "${_REPO_NAME}"' >> global_vars.bzl &&
@@ -39,4 +37,3 @@ substitutions:
   _BUILD_DATA_FOLDER: .build_data
   _BUILD_TAG: $BUILD_ID
   _REPO_NAME: $REPO_NAME
-  _REPO_URL: https://github.com/randxie/pipeline-build-example.git
