@@ -23,7 +23,7 @@ steps:
   - name: 'gcr.io/$PROJECT_ID/boilerplate/bazel_builder:latest'
     args: ['--build-data-folder', '${_BUILD_DATA_FOLDER}', '--dry-run', 'False']
     id: 'bazel-build-all'
-timeout: '600s'
+timeout: '1200s'
 substitutions:
   _GCS_BUCKET: gs://aihub-content-test
   _BUILD_DATA_FOLDER: .build_data
