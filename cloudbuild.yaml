@@ -4,9 +4,9 @@ steps:
     args:
       - '-c'
       - |
-        git init &&
-        git fetch ${_REPO_URL} $BRANCH_NAME --depth 2 &&
-        git merge FETCH_HEAD &&
+        ls &&
+        ls /workspace &&
+        git clone ${_REPO_URL} /workspace --branch $BRANCH_NAME --depth 2 &&
         git diff --name-only HEAD HEAD~1
     id: 'fetch-head'
   - name: 'gcr.io/$PROJECT_ID/boilerplate/ci_setup:latest'
