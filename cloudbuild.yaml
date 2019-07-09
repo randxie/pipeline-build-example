@@ -5,8 +5,8 @@ steps:
       - '-c'
       - |
         git init &&
-        git fetch origin $BRANCH_NAME --depth 2 &&
-        git reset --hard origin/$BRANCH_NAME &&
+        git fetch ${_REPO_URL} $BRANCH_NAME --depth 2 &&
+        git merge FETCH_HEAD &&
         git diff --name-only HEAD HEAD~1
     id: 'fetch-head'
   - name: 'gcr.io/$PROJECT_ID/boilerplate/ci_setup:latest'
@@ -38,3 +38,4 @@ substitutions:
   _BUILD_DATA_FOLDER: .build_data
   _BUILD_TAG: $BUILD_ID
   _REPO_NAME: $REPO_NAME
+  _REPO_URL: https://github.com/randxie/pipeline-build-example.git
