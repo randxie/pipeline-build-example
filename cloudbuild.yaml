@@ -4,6 +4,7 @@ steps:
     args:
       - '-c'
       - |
+        git init &&
         git fetch origin $BRANCH_NAME --depth 2 &&
         git reset --hard origin/$BRANCH_NAME &&
         git diff --name-only HEAD HEAD~1
