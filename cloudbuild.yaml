@@ -18,8 +18,8 @@ steps:
       - '-c'
       - |
         echo 'PROJECT_ID = "$PROJECT_ID"' > global_vars.bzl &&
-        echo 'GCS_BUCKET = "${_GCS_BUCKET}/${_BUILD_TAG}"' >> global_vars.bzl &&
-        echo 'REPO_NAME = "${_REPO_NAME}"' >> global_vars.bzl &&
+        echo 'GCS_BUCKET = "${_GCS_BUCKET}/$BUILD_ID"' >> global_vars.bzl &&
+        echo 'REPO_NAME = "$REPO_NAME"' >> global_vars.bzl &&
         echo 'KFP_HOST = "YOUR-KFP-HOST"' >> global_vars.bzl &&
         echo 'KFP_CLIENT_ID = "YOUR-CLIENT-ID"' >> global_vars.bzl &&
         cat global_vars.bzl
@@ -38,5 +38,4 @@ substitutions:
   _GCS_BUCKET: gs://aihub-content-test
   _BUILD_DATA_FOLDER: .build_data
   _BUILD_TAG: $BUILD_ID
-  _REPO_NAME: $REPO_NAME
   _REPO_URL: https://github.com/randxie/pipeline-build-example.git
